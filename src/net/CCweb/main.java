@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -120,7 +121,7 @@ public class main extends HttpServlet {
 				e.printStackTrace();
 			}
 			 System.out.println("Loaded: " + ontology.getOntologyID());
-
+			 request.getSession().setMaxInactiveInterval(-1);
 			 OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
 		        OWLReasoner reasoner = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());
 	//consume value FOOD-999999
@@ -159,23 +160,23 @@ public class main extends HttpServlet {
 						}
 		            }
 		            
-		            if(age!=null || !age.equals(""))
-		            {
-		            	String name="Human and hasAge value "+Integer.parseInt(age);
-		            	ArrayList<ontologyClass> value2=dlQueryPrinter.askQuery(name);
-		            	for(int i=0;value2.size()>i;i++) {
-		            		try {
-								if(!chechContain(value, value2.get(i))&&containPersonality(personalityList,value2.get(i))) {
-								value.add(value2.get(i));
-								finalResult.add(value2.get(i));
-								}
-							} catch (OWLOntologyCreationException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-		            	}
-		            	
-		            }
+//		            if(age!=null || !age.equals(""))
+//		            {
+//		            	String name="Human and hasAge value "+Integer.parseInt(age);
+//		            	ArrayList<ontologyClass> value2=dlQueryPrinter.askQuery(name);
+//		            	for(int i=0;value2.size()>i;i++) {
+//		            		try {
+//								if(!chechContain(value, value2.get(i))&&containPersonality(personalityList,value2.get(i))) {
+//								value.add(value2.get(i));
+//								finalResult.add(value2.get(i));
+//								}
+//							} catch (OWLOntologyCreationException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+//		            	}
+//		            	
+//		            }
 		            Document person=new Document();
 			         MongoClient mongoClient = MongoClients.create(
 						        "mongodb+srv://nada:luck1997@cluster0-wcdyb.mongodb.net/sleepFeedback?retryWrites=true&w=majority"
@@ -219,11 +220,14 @@ public class main extends HttpServlet {
 			    person.put("personalityRating","");
 			
 		//----------------------------------------------------------------------------------------------------	
-
+			    request.getSession().setMaxInactiveInterval(-1);
 			collection.insertOne(person);
 			ObjectId id = (ObjectId)person.get( "_id" );
 			System.out.println("id----------: "+id.toString());
 			request.getSession().setAttribute("_id", id);
+			System.out.println("3addaa dii kaaaamaan");
+			response.sendRedirect(request.getContextPath() + "/nextPage");
+			
 			
 			
 		     }
@@ -242,9 +246,10 @@ public class main extends HttpServlet {
 					ObjectId id = (ObjectId)person.get( "_id" );
 					System.out.println("id----------: "+id.toString());
 					request.getSession().setAttribute("_id", id);
+					response.sendRedirect(request.getContextPath() + "/nextPage");
 		    	 
 		     }
-			response.sendRedirect(request.getContextPath() + "/nextPage");
+			
 			
 			
 			
