@@ -1,3 +1,15 @@
+<%@page import="com.hp.hpl.jena.sparql.function.library.langeq"%>
+<%@page import="org.semanticweb.owlapi.util.SimpleShortFormProvider"%>
+<%@page import="org.semanticweb.owlapi.util.ShortFormProvider"%>
+<%@page import="net.CCweb.*"%>
+<%@page import="org.semanticweb.owlapi.reasoner.SimpleConfiguration"%>
+<%@page import="org.semanticweb.owlapi.reasoner.OWLReasoner"%>
+<%@page import="com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory"%>
+<%@page import="org.semanticweb.owlapi.reasoner.OWLReasonerFactory"%>
+<%@page import="org.semanticweb.owlapi.model.IRI"%>
+<%@page import="org.semanticweb.owlapi.model.OWLOntology"%>
+<%@page import="org.semanticweb.owlapi.apibinding.OWLManager"%>
+<%@page import="org.semanticweb.owlapi.model.OWLOntologyManager"%>
 <%@page import="net.CCweb.ontologyClass"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -14,6 +26,8 @@ form {
   background: #f4f7f8;
   border-radius: 8px;
 }
+
+
  .number {
   background-color: #5fcf80;
   color: #fff;
@@ -32,6 +46,90 @@ legend {
   margin-bottom: 10px;
   text-align: center;
 }
+
+
+
+.container {
+    max-width: 640px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+}
+
+ul.ks-cboxtags {
+    list-style: none;
+    padding: 20px;
+}
+ul.ks-cboxtags li{
+  display: inline;
+}
+ul.ks-cboxtags li label{
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li label {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+ul.ks-cboxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label {
+    border: 2px solid #1bdbf8;
+    background-color: #12bbd4;
+    color: #fff;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
+  display: absolute;
+}
+ul.ks-cboxtags li input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+ul.ks-cboxtags li input[type="checkbox"]:focus + label {
+  border: 2px solid #e9a1ff;
+}
+
+
+
+
+
+
+
+
+
+
+
 .item{
     text-align:center;
     display:block;
@@ -156,7 +254,29 @@ legend {
 
 <!-- ---------------------------------------------------------------------------------------------------- -->
 
-  
+    #loader { 
+            border: 12px solid #f3f3f3; 
+            border-radius: 50%; 
+            border-top: 12px solid #444444; 
+            width: 70px; 
+            height: 70px; 
+            animation: spin 1s linear infinite; 
+        } 
+          
+        @keyframes spin { 
+            100% { 
+                transform: rotate(360deg); 
+            } 
+        } 
+          
+        .center { 
+            position: absolute; 
+            top: 0; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            margin: auto; 
+        } 
 
 </style>
 <title>Insert title here</title>
@@ -165,7 +285,7 @@ legend {
 
 
 
-
+ <div id="loader" class="center"></div> 
   <div class="row">
     <div class="col-md-12">
      
@@ -180,18 +300,276 @@ legend {
           
           <ul style="list-style-position: inside; list-style-type: circle;" >
           <div>
+          
+          
+          
+          
+          
+          
+          
+          
+          <br>
           <%
-String lang=(String)request.getSession().getAttribute("lang");%>
-          <h1 style="text-align: center;font-family: monospace;"><%=lang.equals("en")?"Your personality":"شخصيتك" %></h1>
-            <% 
-ArrayList<ontologyClass> arr=(ArrayList<ontologyClass>)request.getSession().getAttribute("character");
-for(int i=0;arr.size()>i;i++){
+String lang=(String)request.getSession().getAttribute("lang");
+          ArrayList<ontologyClass>personalityList=(ArrayList<ontologyClass>) request.getSession().getAttribute("persoanlityList");
+
 %>
-            
-             <li style="padding-bottom: 10px;font-size: 20px;border: solid white 2px"><%=lang.equals("en")?arr.get(i).getClassName_en():arr.get(i).getClassName_ar() %></li>
+
+<h2><%=lang.equals("en")?"In case you do not agree with the personality traits shown based on your pre-sleep routine or nothing shows up, please refer to your personality using the following tags :)":"في حالة لا تتفق مع الصفات المعروضة او في حالة عدم ظهور شيئ ,يمكنك اختيار الصفات التي تناسب شخصيتك" %></h2>
+
+
+
+<div class="container">
+    <ul class="ks-cboxtags">
+    <h3>You describe yourself as reserved</h3>
+    <li>
+    <input type="checkbox" name="Q1" id="Q101" value="1">
+      <label for="Q101" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q1" id="Q102" value="2">
+      <label for="Q102" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q1" id="Q103" value="3">
+      <label for="Q103" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q1" id="Q104" value="4">
+      <label for="Q104" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q1" id="Q105" value="5">
+      <label for="Q105" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+          <h3>You are generally trusting</h3>
+    <li>
+    <input type="checkbox" name="Q2" id="Q201" value="1">
+      <label for="Q201" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q2" id="Q202" value="2">
+      <label for="Q202" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q2" id="Q203" value="3">
+      <label for="Q203" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q2" id="Q204" value="4">
+      <label for="Q204" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q2" id="Q205" value="5">
+      <label for="Q205" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+        <h3>You tend to be lazy</h3>
+    <li>
+    <input type="checkbox" name="Q3" id="Q301" value="1">
+      <label for="Q301" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q3" id="Q302" value="2">
+      <label for="Q302" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q3" id="Q303" value="3">
+      <label for="Q303" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q3" id="Q304" value="4">
+      <label for="Q304" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q3" id="Q305" value="5">
+      <label for="Q305" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+        <h3>You are relaxed, handle stress well</h3>
+    <li>
+    <input type="checkbox" name="Q4" id="Q401" value="1">
+      <label for="Q401" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q4" id="Q402" value="2">
+      <label for="Q402" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q4" id="Q403" value="3">
+      <label for="Q403" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q4" id="Q404" value="4">
+      <label for="Q404" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q4" id="Q405" value="5">
+      <label for="Q405" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+      <h3>You have few artistic interests</h3>
+    <li>
+    <input type="checkbox" name="Q5" id="Q501" value="1">
+      <label for="Q501" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q5" id="Q502" value="2">
+      <label for="Q502" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q5" id="Q503" value="3">
+      <label for="Q503" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q5" id="Q504" value="4">
+      <label for="Q504" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q5" id="Q505" value="5">
+      <label for="Q505" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+        <h3>You are outgoing, sociable</h3>
+    <li>
+    <input type="checkbox" name="Q6" id="Q601" value="1">
+      <label for="Q601" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q6" id="Q602" value="2">
+      <label for="Q602" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q6" id="Q603" value="3">
+      <label for="Q603" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q6" id="Q604" value="4">
+      <label for="Q604" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q6" id="Q605" value="5">
+      <label for="Q605" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+        <h3>You tend to find fault with others</h3>
+    <li>
+    <input type="checkbox" name="Q7" id="Q701" value="1">
+      <label for="Q701" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q7" id="Q702" value="2">
+      <label for="Q702" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q7" id="Q703" value="3">
+      <label for="Q703" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q7" id="Q704" value="4">
+      <label for="Q704" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q7" id="Q705" value="5">
+      <label for="Q705" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+        <h3>You do a thorough job</h3>
+    <li>
+    <input type="checkbox" name="Q8" id="Q801" value="1">
+      <label for="Q801" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q8" id="Q802" value="2">
+      <label for="Q802" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q8" id="Q803" value="3">
+      <label for="Q803" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q8" id="Q804" value="4">
+      <label for="Q804" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q8" id="Q805" value="5">
+      <label for="Q805" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+        <h3>You get nervous easily</h3>
+    <li>
+    <input type="checkbox" name="Q9" id="Q901" value="1">
+      <label for="Q901" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q9" id="Q902" value="2">
+      <label for="Q902" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q9" id="Q903" value="3">
+      <label for="Q903" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q9" id="Q904" value="4">
+      <label for="Q904" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q9" id="Q905" value="5">
+      <label for="Q905" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+        <h3>You have an active imagination</h3>
+    <li>
+    <input type="checkbox" name="Q10" id="Q1001" value="1">
+      <label for="Q1001" >Strongly disagree</label>
+      </li>
+      <li>
+    <input type="checkbox" name="Q10" id="Q1002" value="2">
+      <label for="Q1002" >Disagree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q10" id="Q1003" value="3">
+      <label for="Q1003" >Neither agree nor disagree</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q10" id="Q1004" value="4">
+      <label for="Q1004" >Agree alittle</label> 
+      </li>
+      <li>
+    <input type="checkbox" name="Q10" id="Q1005" value="5">
+      <label for="Q1005" >Strongly agree</label> 
+      </li>
+      <!--  ------------------------------------------------------------------------------------------------- -->
+    </ul>
+    </div>
+
+
+
+
+
+
+          <h1 style="text-align: center;font-family: monospace;"><%=lang.equals("en")?"Your personality":"شخصيتك" %></h1>
+          <% 
+          onotogyManager manager=new onotogyManager();
+          OWLOntology ontology = manager.loadOntology();
+          OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
+	        OWLReasoner reasoner02 = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());  
+	       ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+	       DLQueryPrinter dlQueryPrinter=new DLQueryPrinter(
+                new DLQueryEngine(reasoner02, shortFormProvider),shortFormProvider); 
+	      //ArrayList<ontologyClass> finalResult=new ArrayList<ontologyClass>();
+	      String expression=(String)request.getSession().getAttribute("Expression");
+	      ArrayList<ontologyClass> value=dlQueryPrinter.askQuery(expression);
+	      request.getSession().setAttribute("Result", value);
+                //  ArrayList<ontologyClass> finalResult=(ArrayList<ontologyClass>) request.getSession().getAttribute("Result");
+for(int i=0;value.size()>i;i++){
+%>
+                  <li style="padding-bottom: 10px;font-size: 20px;border: solid white 2px"><%=lang.equals("en")?value.get(i).getClassName_en():value.get(i).getClassName_ar() %></li>
+<br>
+
+<%  } %>
              
-             <br>
-             <%} %>
        </ul>
        </div>
        <hr>
@@ -308,7 +686,21 @@ for(int i=0;arr.size()>i;i++){
 
      </div>
   </div>
-
+<script> 
+        document.onreadystatechange = function() { 
+            if (document.readyState !== "complete") { 
+                document.querySelector( 
+                  "body").style.visibility = "hidden"; 
+                document.querySelector( 
+                  "#loader").style.visibility = "visible"; 
+            } else { 
+                document.querySelector( 
+                  "#loader").style.display = "none"; 
+                document.querySelector( 
+                  "body").style.visibility = "visible"; 
+            } 
+        }; 
+    </script> 
 
 </body>
 </html>

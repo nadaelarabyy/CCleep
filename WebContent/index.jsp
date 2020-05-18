@@ -1,3 +1,4 @@
+<%@page import="net.CCweb.sleepClass"%>
 <%@page import="net.CCweb.ontologyClass"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="net.CCweb.onotogyManager"%>
@@ -100,9 +101,7 @@ legend {
   width: 20px;
 }
 
-.toggle-box:checked + label:before {
-  /* content: "\2212"; */
-}
+
 .container {
     max-width: 640px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -148,12 +147,10 @@ ul.ks-cboxtags li label::before {
     font-weight: 900;
     font-size: 12px;
     padding: 2px 6px 2px 2px;
-    /* content: "\f067"; */
     transition: transform .3s ease-in-out;
 }
 
 ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
-    /* content: "\f00c"; */
     transform: rotate(-360deg);
     transition: transform .3s ease-in-out;
 }
@@ -300,26 +297,53 @@ li:hover .tooltiptext {
 
 
 
+  #loader { 
+            border: 12px solid #f3f3f3; 
+            border-radius: 50%; 
+            border-top: 12px solid #444444; 
+            width: 70px; 
+            height: 70px; 
+            animation: spin 1s linear infinite; 
+        } 
+          
+        @keyframes spin { 
+            100% { 
+                transform: rotate(360deg); 
+            } 
+        } 
+          
+        .center { 
+            position: absolute; 
+            top: 0; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            margin: auto; 
+        } 
+
+
+
 </style>
 
 
 
 </head>
 <body>
+<div id="loader" class="center"></div>
   <div class="row">
     <div class="col-md-12">
 <form method="post" >
    <legend><span class="number">2</span></legend>
    
    <div style="text-align: center">
-             <img src="https://github.com/nadaelarabyy/Character/blob/master/baby%20meme.jpg?raw=true" alt="" width="300" height="300" style="border: solid white 2px;"/>
+             <img src="https://raw.githubusercontent.com/nadaelarabyy/Character/master/CBSTriad.PNG" alt="" width="300" height="300" style="border: solid white 2px;"/>
              
    </div>
   <h1 style="font-family: monospace;"></h1>
   <%String lang=(String)request.getSession().getAttribute("lang"); %>
      <div style="border: solid white 2px; font-family: monospace;">
        <h3>
-                <%=lang.equals("en")?"This application targets the situation which is one hour or two hours and the behaviors you do if it exists before you go to sleep so the choices have to be relative to this regard and the loading shall be a little bit slow":"هذا البرنامج مهتم فقط بالتصرفات التي تقوم بها في الساعة الاخيرة ان وجدت قبل الذهاب الي النوم و التحميل سيكون بطئ قليلا"%>
+                <%=lang.equals("en")?"In C-B-S triad we are mapping character, behavior and situation and by knowing two parts of the triad we can infer the third one so imagine having a certain behavior in specific situation then we can infer character <br> Behavior: performing certain activity, food consumption, emotions <br> Situation: couple of hours before going to bed <br> Character: personality traits based on the big five model":"التصرفات: النشاطات التي تقوم بها <br> الموقف: الساعات الاخيرة قبل الذهاب للنوم <br> الشخصية: صفات الانسان "%>
        
        </h3>
      </div>
@@ -355,9 +379,12 @@ li:hover .tooltiptext {
 <div>
 <%
 onotogyManager manager=new onotogyManager();
+
 OWLOntology ontology=manager.loadOntology();
 OWLReasoner reasoner=manager.useReasoner(ontology);
-reasoner.precomputeInferences();
+//ArrayList<sleepClass> foodActivity=manager.getActivityFoodNums(ontology,reasoner);
+
+//request.getSession().setAttribute("foodActivity", foodActivity);
 request.getSession().setAttribute("persoanlityList", manager.getPersonality(ontology, reasoner));
 ArrayList<ontologyClass> vegetablesArray=manager.getVegetables(ontology, reasoner);
 		for(int i=0;vegetablesArray.size()>i;i++){
@@ -1050,7 +1077,16 @@ ArrayList<ontologyClass> activitiesArray=manager.getActivity(ontology,reasoner);
       <span class="tooltiptext"><%=sleepDisorder.get(j).getComment().equals("none")?sleepDisorder.get(j).getDefinition():sleepDisorder.get(j).getComment() %></span>
       </li>
      
-      <%} %>
+      <%}
+    
+    
+    
+    
+    
+	
+    
+    
+    %>
     </ul>
   
   </div>
@@ -1130,6 +1166,20 @@ for (i = 0; i < acc.length; i++) {
     }
   });
 }
+
+document.onreadystatechange = function() { 
+    if (document.readyState !== "complete") { 
+        document.querySelector( 
+          "body").style.visibility = "hidden"; 
+        document.querySelector( 
+          "#loader").style.visibility = "visible"; 
+    } else { 
+        document.querySelector( 
+          "#loader").style.display = "none"; 
+        document.querySelector( 
+          "body").style.visibility = "visible"; 
+    } 
+};
 </script>
 
 </body>

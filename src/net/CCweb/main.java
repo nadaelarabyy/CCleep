@@ -3,6 +3,7 @@ package net.CCweb;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -13,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.lucene.search.ReqExclScorer;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.json.simple.parser.ParseException;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -75,108 +78,110 @@ public class main extends HttpServlet {
 			System.out.println("email: "+email);
 			System.out.println("gender: "+gender);
 			System.out.println("age: "+age);
-			
+			ArrayList<String> foodArr=new ArrayList<String>();
+			ArrayList<String> activityArr=new ArrayList<String>();
+			ArrayList<String> emotionArr=new ArrayList<String>();
+			ArrayList<String> behavArr=new ArrayList<String>();
 			if(food !=null) {
+			String[] fooIRIs=getFoodIri(food);
+			for(int i=0;fooIRIs.length>i;i++) {
+				foodArr.add(fooIRIs[i]);
+			}
 			System.out.println("food: "+Arrays.toString(getFoodNames(food)));
 			}
 			if(activity!=null) {
+				String[] ActIRIs=getActivityIri(activity);
+				for(int i=0;ActIRIs.length>i;i++) {
+					activityArr.add(ActIRIs[i]);
+				}
 			System.out.println("activity: "+Arrays.toString(getActivityNames(activity)));
 			}
 			if(emotion!=null) {
+				String[] ActIRIs=getEmotionIri(emotion);
+				for(int i=0;ActIRIs.length>i;i++) {
+					emotionArr.add(ActIRIs[i]);
+				}
 			System.out.println("emotion: "+Arrays.toString(getEmotionNames(emotion)));
 			}
 			if(behavior!=null) {
+				String[] ActIRIs=getBehaviorIri(behavior);
+				for(int i=0;ActIRIs.length>i;i++) {
+					behavArr.add(ActIRIs[i]);
+				}
 			System.out.println("behavior: "+Arrays.toString(getBehaviorNames(behavior)));
 			}
 			if(sleepDisorder!=null) {
 				System.out.println("sleepDisorder: "+Arrays.toString(getSleepDisoderNames(sleepDisorder)));
 				}
-			
-			System.out.println("opinion: "+Arrays.toString(opinion));
-			System.out.println("suggestion: "+suggestion);
-			System.out.println("---------------------------------------------------------");
-			if(food!=null)
-			System.out.println("food query: "+consumeQuery(getFoodIri(food)));
-			if(activity!=null)
-			System.out.println("activity query: "+hasActivityQuery(getActivityIri(activity)));
-			if(emotion!=null)
-			System.out.println("emotion query: "+hasEmotionQuery(getEmotionIri(emotion)));
-			if(behavior!=null)
-			System.out.println("behavior query: "+hasBehaviorQuery(getBehaviorIri(behavior)));
-			if(sleepDisorder!=null)
-				System.out.println("behavior query: "+hasSleepDisorderQuery(getSleepDisoderIri(sleepDisorder)));
-			
-			
-//		----------------------------------------------------------------------------------------------------------
-			String x = "C:\\Users\\user\\Desktop\\Ontologies\\V11RulesforFacets.owl";
-
-			 OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-			 OWLOntology ontology = null;
+			  onotogyManager manager=new onotogyManager();
+			   OWLOntology ontology=null;
 			try {
-//				ontology = manager.loadOntologyFromOntologyDocument(new File(x));
-				IRI pizzaontology = IRI.create("https://raw.githubusercontent.com/nadaelarabyy/Character/master/V11RulesforFacets.owl");
-				ontology=manager.loadOntology(pizzaontology);
+				ontology = manager.loadOntology();
 			} catch (OWLOntologyCreationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			 System.out.println("Loaded: " + ontology.getOntologyID());
-			 request.getSession().setMaxInactiveInterval(-1);
-			 OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
-		        OWLReasoner reasoner = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());
-	//consume value FOOD-999999
-				 ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		            // Create the DLQueryPrinter helper class. This will manage the
-		            // parsing of input and printing of results
-		            DLQueryPrinter dlQueryPrinter = new DLQueryPrinter(
-		                    new DLQueryEngine(reasoner, shortFormProvider),
-		                    shortFormProvider);
-		            // Enter the query loop. A user is expected to enter class
-		            // expression on the command line.
-//		            doQueryLoop(dlQueryPrinter);
-		            String expression="Human";
-		            if(food!=null)
-		            	expression=expression+" and "+consumeQuery(getFoodIri(food));
-		            if(activity!=null)
-		            	expression=expression+" and "+hasActivityQuery(getActivityIri(activity));
-		            if(emotion!=null)
-		            	expression=expression+" and "+hasEmotionQuery(getEmotionIri(emotion));
-		            if(behavior!=null)
-		            	expression=expression+" and "+hasBehaviorQuery(getBehaviorIri(behavior));
-		            if(sleepDisorder!=null)
-		            	expression=expression+" and "+hasSleepDisorderQuery(getSleepDisoderIri(sleepDisorder));
-		            ArrayList<ontologyClass> finalResult=new ArrayList<ontologyClass>();
-		            
-		            ArrayList<ontologyClass> value=dlQueryPrinter.askQuery(expression);
-		            ArrayList<ontologyClass>personalityList=(ArrayList<ontologyClass>) request.getSession().getAttribute("persoanlityList");
-		            for(int i=0;value.size()>i;i++) {
-		            	try {
-							if(containPersonality(personalityList,value.get(i))) {
-								finalResult.add(value.get(i));
-							}
-						} catch (OWLOntologyCreationException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		            }
-		            
-//		            if(age!=null || !age.equals(""))
-//		            {
-//		            	String name="Human and hasAge value "+Integer.parseInt(age);
-//		            	ArrayList<ontologyClass> value2=dlQueryPrinter.askQuery(name);
-//		            	for(int i=0;value2.size()>i;i++) {
-//		            		try {
-//								if(!chechContain(value, value2.get(i))&&containPersonality(personalityList,value2.get(i))) {
-//								value.add(value2.get(i));
-//								finalResult.add(value2.get(i));
-//								}
-//							} catch (OWLOntologyCreationException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//		            	}
-//		            	
-//		            }
+			   OWLReasoner reasoner=manager.useReasoner(ontology);
+			   ArrayList<sleepClass> foodAct = null;
+			   ArrayList<sleepClass> behavEmo=null;
+			try {
+				foodAct = manager.getActivityFoodNums(ontology, reasoner, foodArr, activityArr);
+				behavEmo=manager.getBehaviorEmotinsNums(ontology, behavArr, emotionArr);
+			} catch (OWLOntologyCreationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("opinion: "+Arrays.toString(opinion));
+			System.out.println("suggestion: "+suggestion);
+			System.out.println("---------------------------------------------------------");
+
+//			ArrayList<sleepClass> behavEmo=(ArrayList<sleepClass>) request.getSession().getAttribute("behaviorEmotion");
+//            ArrayList<sleepClass> foodAct=(ArrayList<sleepClass>) request.getSession().getAttribute("foodActivity");
+			String[] foodIRI=null;
+			String[] ActivityIRI=null;
+			String[] behaviorIRI=null;
+			double calories=0;
+			double metValues=0;
+			int sleepHygieneScore=0;
+			int sleepQualityScore=0;
+			if(food!=null) {
+				foodIRI=getFoodIri(food);
+				calories=getCalories(foodIRI, foodAct);
+			}
+			if(activity!=null) {
+				ActivityIRI=getActivityIri(activity);
+				metValues=getMETValues(ActivityIRI, foodAct);
+				
+			}
+			if(behavior!=null) {
+				behaviorIRI=getBehaviorIri(behavior);
+				String[] x=getHygieneScores(behaviorIRI, behavEmo).split(Pattern.quote("$"));
+				sleepHygieneScore=Integer.parseInt(x[0]);
+				sleepQualityScore=Integer.parseInt(x[1]);
+			
+			}
+			
+              String expression="Human and consume some ( Food and ( amountCalories some xsd:double[>= "+calories+" ]) and ( amountCalories some xsd:double[<= "+calories+" ] )) and hasActivity some ( Activity and (hasMETValue some xsd:double[>= "+metValues+" ]) and ( hasMETValue " + "some xsd:double[<= "+metValues+" ])) and hasTaskScore some ( TaskScore and (ofTask value sleepHygieneTask ) and ( hasScore value "+sleepHygieneScore+")) and hasTaskScore some ( TaskScore and (ofTask value sleepQualityTask ) and ( hasScore value "+sleepQualityScore+"))";          	
+//            int[] score=getScores(foodIRI, activityIRI, behaviorIRI, emotionIRI, behavEmo, foodAct);			
+//			String expression="Human and (hasTaskScore some(TaskScore and ofTask value sleepQualityTask and hasScore value "+score[1]+")) and (hasTaskScore some (TaskScore and ofTask value sleepHygieneTask and hasScore value "+score[0]+"))";
+
+//            if(sleepDisorder!=null)
+//            	expression=expression+" and "+hasSleepDisorderQuery(getSleepDisoderIri(sleepDisorder));
+            
+            request.getSession().setAttribute("characterExpression", expression);
+            //		----------------------------------------------------------------------------------------------------------
+			String x = "C:\\Users\\user\\Desktop\\Ontologies\\V11RulesforFacets.owl";
+
+
 		            Document person=new Document();
 			         MongoClient mongoClient = MongoClients.create(
 						        "mongodb+srv://nada:luck1997@cluster0-wcdyb.mongodb.net/sleepFeedback?retryWrites=true&w=majority"
@@ -192,8 +197,10 @@ public class main extends HttpServlet {
 				        person.put("email", email);
 				    if(gender!=null)
 				        person.put("gender", gender);
-				    if(age!=null)
+				    if(age!=null) {
 				        person.put("age", age);
+				        request.getSession().setAttribute("humanAge", age);
+				    }
 				    if(food!=null)
 				        person.put("food",Arrays.asList(getFoodNames(food)));
 				    if(activity!=null)
@@ -208,47 +215,48 @@ public class main extends HttpServlet {
 				        person.put("opinion",Arrays.asList(opinion));
 				    if(suggestion!=null)
 				        person.put("suggestion",suggestion);
-		     if(finalResult.size()<personalityList.size()) {       
-			     request.getSession().setAttribute("character", finalResult);
-			     String[] characterArray=new String[finalResult.size()];
-			     for(int i=0;finalResult.size()>i;i++) {
-			    	 characterArray[i]=finalResult.get(i).getClassName_en();
-			     }
 
-			    if(characterArray!=null)
-			    	person.put("characterInference",Arrays.asList(characterArray));
+				   
 			    person.put("personalityRating","");
+			    person.put("characterInference","");
+			    person.put("personalityOfChoice","");
+			    person.put("BFI-Q1","");
+			    person.put("BFI-Q2","");
+			    person.put("BFI-Q3","");
+			    person.put("BFI-Q4","");
+			    person.put("BFI-Q5","");
+			    person.put("BFI-Q6","");
+			    person.put("BFI-Q7","");
+			    person.put("BFI-Q8","");
+			    person.put("BFI-Q9","");
+			    person.put("BFI-Q10","");
 			
 		//----------------------------------------------------------------------------------------------------	
-			    request.getSession().setMaxInactiveInterval(-1);
 			collection.insertOne(person);
 			ObjectId id = (ObjectId)person.get( "_id" );
 			System.out.println("id----------: "+id.toString());
 			request.getSession().setAttribute("_id", id);
-			System.out.println("3addaa dii kaaaamaan");
-			response.sendRedirect(request.getContextPath() + "/nextPage");
+			request.getSession().setAttribute("Expression", expression);
+//			------------------------------------------------------------------------------
+//		 OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
+//	        OWLReasoner reasoner02 = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());  
+//	       ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+//	       DLQueryPrinter dlQueryPrinter=new DLQueryPrinter(
+//                  new DLQueryEngine(reasoner02, shortFormProvider),
+//                  shortFormProvider); 
+//	      ArrayList<ontologyClass> finalResult=new ArrayList<ontologyClass>();
+//         try {
+//			ArrayList<ontologyClass> value=dlQueryPrinter.askQuery(expression);
+//			request.getSession().setAttribute("Result", value);
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+         
+//			------------------------------------------------------------------------------
 			
-			
-			
-		     }
-		     else {
-		    	 
-		    	 ArrayList<ontologyClass> test=new ArrayList<ontologyClass>();
-		    	 ontologyClass xTest=new ontologyClass();
-		    	 xTest.setClassName_en("we could not define your personality based on your input");
-		    	 xTest.setClassName_ar("لم نستطع التبين من صفاتك بناءا علي بياناتك");
-		    	 test.add(xTest);
-		    	 String[] array= {"we could not define your personality based on your input"};
-		    	 person.put("characterInference",Arrays.asList(array));
-		    	 person.put("personalityRating","");
-		    	 request.getSession().setAttribute("character", test);
-		    	    collection.insertOne(person);
-					ObjectId id = (ObjectId)person.get( "_id" );
-					System.out.println("id----------: "+id.toString());
-					request.getSession().setAttribute("_id", id);
-					response.sendRedirect(request.getContextPath() + "/nextPage");
-		    	 
-		     }
+				response.sendRedirect(request.getContextPath() + "/nextPage");
+
 			
 			
 			
@@ -326,10 +334,12 @@ public static String hasSleepDisorderQuery(String[] sleepDisorder) {
 
 public static String[] getFoodIri(String[] food) {
 	String[] foodIri=new String[food.length];
+	
 	for(int i=0;food.length>i;i++) {
 		String[] temp=food[i].split(Pattern.quote("$"));
 		foodIri[i]=temp[1];
 	}
+	
 	return foodIri;
 }
 
@@ -337,7 +347,7 @@ public static String[] getFoodIri(String[] food) {
 		String[] foodName=new String[food.length];
 		for(int i=0;food.length>i;i++) {
 			String[] temp=food[i].split(Pattern.quote("$"));
-			foodName[i]=temp[0];
+			foodName[i]=temp[0].replace("_", " ");
 			
 			
 		}
@@ -355,7 +365,7 @@ public static String[] getFoodIri(String[] food) {
 		String[] activityName=new String[activity.length];
 		for(int i=0;activity.length>i;i++) {
 			String[] temp=activity[i].split(Pattern.quote("$"));
-			activityName[i]=temp[0];
+			activityName[i]=temp[0].replace("_", " ");
 		}
 		return activityName;
 	}
@@ -371,7 +381,7 @@ public static String[] getFoodIri(String[] food) {
 		String[] emotionName=new String[emotion.length];
 		for(int i=0;emotion.length>i;i++) {
 			String[] temp=emotion[i].split(Pattern.quote("$"));
-			emotionName[i]=temp[0];
+			emotionName[i]=temp[0].replace("_", " ");
 			
 		}
 		return emotionName;
@@ -389,7 +399,7 @@ public static String[] getFoodIri(String[] food) {
 		String[] behaviorName=new String[behavior.length];
 		for(int i=0;behavior.length>i;i++) {
 			String[] temp=behavior[i].split(Pattern.quote("$"));
-			behaviorName[i]=temp[0];
+			behaviorName[i]=temp[0].replace("_", " ");
 			
 		}
 		return behaviorName;
@@ -407,10 +417,114 @@ public static String[] getFoodIri(String[] food) {
 		String[] SDName=new String[sleepDisoder.length];
 		for(int i=0;sleepDisoder.length>i;i++) {
 			String[] temp=sleepDisoder[i].split(Pattern.quote("$"));
-			SDName[i]=temp[0];
+			SDName[i]=temp[0].replace("_", " ");
 			
 		}
 		return SDName;
+	}
+	
+	
+	public static String getHygieneScores(String[] behavior , ArrayList<sleepClass>behavEmo) {
+		String v="";
+		int sleepHygieneScore=0;
+		int sleepQualityScore=0;
+		for(int i=0;behavior.length>i;i++) {
+			for(int j=0;behavEmo.size()>j;j++) {
+				if(behavEmo.get(j).getClassName().getShortForm().toString().equals(behavior[i])) {
+					sleepHygieneScore+=behavEmo.get(j).getSleepHygieneScore();
+					sleepQualityScore+=behavEmo.get(j).getSleepQualityScore();
+					break;
+				}
+			}
+		}
+		v+=sleepHygieneScore+"$"+sleepQualityScore;
+		return v;
+	}
+	
+	
+	public static double getCalories(String [] food,ArrayList<sleepClass>foodAct ) {
+		double calories=0;
+		for(int i=0;food.length>i;i++) {
+			for(int j=0;foodAct.size()>j;j++) {
+				if(foodAct.get(j).getClassName().getShortForm().toString().equals(food[i])) {
+					calories+=foodAct.get(j).getCalories();
+				}
+			}
+		}
+		return calories;
+	}
+	public static double getMETValues(String [] activity,ArrayList<sleepClass>foodAct ) {
+		double METV=0;
+		for(int i=0;activity.length>i;i++) {
+			for(int j=0;foodAct.size()>j;j++) {
+				if(foodAct.get(j).getClassName().getShortForm().toString().equals(activity[i])) {
+					METV+=foodAct.get(j).getMETValues();
+				}
+			}
+		}
+		return METV;
+	}
+	
+	public static int[] getScores(String[] food, String[] activity,String[] behavior,String[] emotion,ArrayList<sleepClass>behavEmo,ArrayList<sleepClass>foodAct) {
+		int[] score=new int[2];
+		int sleepHygieneScore=0;
+		int sleepQualityScore=0;
+		if(food!=null) {
+		for(int i=0;food.length>i;i++) {
+			for(int j=0;foodAct.size()>j;j++) {
+				if(foodAct.get(j).getClassName().getShortForm().toString().equals(food[i])) {
+					sleepHygieneScore+=foodAct.get(j).getSleepHygieneScore();
+					sleepQualityScore+=foodAct.get(j).getSleepQualityScore();
+					break;
+				}
+			}
+		}
+	}
+		if(activity!=null){
+		for(int i=0;activity.length>i;i++) {
+			for(int j=0;foodAct.size()>j;j++) {
+				if(foodAct.get(j).getClassName().getShortForm().toString().equals(activity[i])) {
+					sleepHygieneScore+=foodAct.get(j).getSleepHygieneScore();
+					sleepQualityScore+=foodAct.get(j).getSleepQualityScore();
+					break;
+				}
+			}
+		}
+	}
+		if(behavior!=null) {
+		for(int i=0;behavior.length>i;i++) {
+			for(int j=0;behavEmo.size()>j;j++) {
+				if(behavEmo.get(j).getClassName().getShortForm().toString().equals(behavior[i])) {
+					sleepHygieneScore+=behavEmo.get(j).getSleepHygieneScore();
+					sleepQualityScore+=behavEmo.get(j).getSleepQualityScore();
+					break;
+				}
+			}
+		}
+	}
+		if(emotion!=null) {
+		for(int i=0;emotion.length>i;i++) {
+			for(int j=0;behavEmo.size()>j;j++) {
+				if(behavEmo.get(j).getClassName().getShortForm().toString().equals(emotion[i])) {
+					sleepHygieneScore+=behavEmo.get(j).getSleepHygieneScore();
+					sleepQualityScore+=behavEmo.get(j).getSleepQualityScore();
+					break;
+				}
+			}
+		}
+	}
+		score[0]=sleepHygieneScore;
+		score[1]=sleepQualityScore;
+		System.out.println("sleepHygieneScore: "+sleepHygieneScore+" sleepQualityScore: "+sleepQualityScore);
+		return score;
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 }

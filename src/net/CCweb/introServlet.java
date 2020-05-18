@@ -1,10 +1,16 @@
 package net.CCweb;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.parser.ParseException;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 /**
  * Servlet implementation class introServlet
@@ -41,8 +47,11 @@ public class introServlet extends HttpServlet {
 			lang="en";
 		request.getSession().setAttribute("lang", lang);
 		boolean submitButtonPressed = request.getParameter("submitIntro") != null;
-		if(submitButtonPressed)
+		if(submitButtonPressed) {
+		
+		
 		response.sendRedirect(request.getContextPath() + "/chooseHabits");
+		}
 	}
 
 }

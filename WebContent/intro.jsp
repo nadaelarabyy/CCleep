@@ -1,3 +1,9 @@
+<%@page import="net.CCweb.onotogyManager"%>
+<%@page import="net.CCweb.sleepClass"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.io.File"%>
+<%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -123,7 +129,12 @@ label.light {
       <form  method="post">
         <legend><span class="number">1</span></legend>
         <div class="item">
-          <img src="https://raw.githubusercontent.com/nadaelarabyy/Character/master/CC.png" alt="" width="300" height="300" style="border: solid white 2px;"/>
+        <% 
+        onotogyManager manager=new onotogyManager();
+        //ArrayList<sleepClass> behaviorEmotion=manager.getBehaviorEmotinsNums();
+    	//request.getSession().setAttribute("behaviorEmotion", behaviorEmotion);
+    	 %>
+          <img src="https://raw.githubusercontent.com/nadaelarabyy/Character/master/cc-logo.PNG" alt="" width="400" height="300" style="border: solid white 2px;"/>
           <div style="border: solid white 1px;">
           <h1 style="font-family: monospace;">Character Computing</h1>
           <div style="border: solid white 5px; padding: 10px;">

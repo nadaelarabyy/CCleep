@@ -1,19 +1,108 @@
 package net.CCweb;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.ClassExpressionType;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
+import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLDataComplementOf;
+import org.semanticweb.owlapi.model.OWLDataExactCardinality;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataHasValue;
+import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
+import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
+import org.semanticweb.owlapi.model.OWLDataMinCardinality;
+import org.semanticweb.owlapi.model.OWLDataOneOf;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLDataUnionOf;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatypeDefinitionAxiom;
+import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLFacetRestriction;
+import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
+import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectComplementOf;
+import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
+import org.semanticweb.owlapi.model.OWLObjectHasSelf;
+import org.semanticweb.owlapi.model.OWLObjectHasValue;
+import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectInverseOf;
+import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
+import org.semanticweb.owlapi.model.OWLObjectOneOf;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectUnionOf;
+import org.semanticweb.owlapi.model.OWLObjectVisitor;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
+import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
+import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
+import org.semanticweb.owlapi.model.SWRLClassAtom;
+import org.semanticweb.owlapi.model.SWRLDataPropertyAtom;
+import org.semanticweb.owlapi.model.SWRLDataRangeAtom;
+import org.semanticweb.owlapi.model.SWRLDifferentIndividualsAtom;
+import org.semanticweb.owlapi.model.SWRLIndividualArgument;
+import org.semanticweb.owlapi.model.SWRLLiteralArgument;
+import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
+import org.semanticweb.owlapi.model.SWRLRule;
+import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
+import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.reasoner.ConsoleProgressMonitor;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
@@ -24,40 +113,273 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
 import org.semanticweb.owlapi.search.EntitySearcher;
 
+import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
+
+import de.derivo.sparqldlapi.Query;
+import de.derivo.sparqldlapi.QueryEngine;
+import de.derivo.sparqldlapi.QueryResult;
+import de.derivo.sparqldlapi.exceptions.QueryEngineException;
+import de.derivo.sparqldlapi.exceptions.QueryParserException;
+
+
 public class onotogyManager {
-	
+	private static QueryEngine engine;
 	public onotogyManager() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public static void main(String[] args) throws OWLOntologyCreationException {
+	public static void main(String[] args) throws OWLOntologyCreationException, URISyntaxException, ParseException {
 	   onotogyManager manager=new onotogyManager();
 	   OWLOntology ontology=manager.loadOntology();
 	   OWLReasoner reasoner=manager.useReasoner(ontology);
-	   reasoner.precomputeInferences();
-//	   System.out.println(manager.getSleepDisorder(ontology, reasoner));
-	   
-//	   System.out.println(manager.getVegetables(ontology, reasoner).toString());
-//	   System.out.println(manager.getSweetFood(ontology, reasoner).toString());
-//	   System.out.println(manager.getSausages(ontology, reasoner).toString());
-//	   System.out.println(manager.getNutsAndSeeds(ontology, reasoner).toString());
-//	   System.out.println(manager.getDairyProducts(ontology, reasoner).toString());
-//	   System.out.println(manager.getActivity(ontology, reasoner).toString());
-//	   System.out.println(manager.getFruits(ontology, reasoner).toString());
-//	   System.out.println(manager.getFish(ontology, reasoner).toString());
-//	   System.out.println(manager.getEggs(ontology, reasoner).toString());
-//	   System.out.println(manager.getCereal(ontology, reasoner).toString());
-//	   System.out.println(manager.getBread(ontology, reasoner).toString());
-//	   System.out.println(manager.getBiscuitsAndCracker(ontology, reasoner).toString());
-//	   System.out.println(manager.getAlcoholicBeverages(ontology, reasoner).toString());
-//	   System.out.println(manager.getNonAlcoholicDrinks(ontology, reasoner).toString());
-//	   System.out.println(manager.getCoffeeDrinks(ontology, reasoner).toString());
-//	   System.out.println(manager.getConsumptionBehavior(ontology, reasoner).toString());
-//	   System.out.println(manager.getEntertainmentBehavior(ontology, reasoner).toString());
-//	   System.out.println(manager.getSleepBehavior(ontology, reasoner).toString());
-//	   System.out.println(manager.getEmotionProcess(ontology, reasoner).toString());
-//	   System.out.println(manager.getBodilyProcess(ontology, reasoner).toString());
+	   ArrayList<String> food= new ArrayList<String>();
+	   food.add("FOOD-419");
+	   food.add("FOOD-429");
+	   ArrayList<String> activity= new ArrayList<String>();
+	   activity.add("ACTIVITY-2150");
+	   activity.add("ACTIVITY-7075");
+	   activity.add("ACTIVITY-13045");
+	   System.out.println(manager.getActivityFoodNums(ontology, reasoner, food, activity));
+//	   reasoner.precomputeInferences();
+//	   System.out.println(manager.getActivityFoodNums().toString());
+//	   manager.getActivityFoodNums();
 	}
+	
+	public  ArrayList<sleepClass> getBehaviorEmotinsNums(OWLOntology ontology,ArrayList<String> behavior,ArrayList<String> emotions) throws OWLOntologyCreationException, URISyntaxException {
+//		ArrayList<sleepClass> sleepRes=new ArrayList<sleepClass>();
+		OWLOntologyManager manager1 = OWLManager.createOWLOntologyManager();
+//		onotogyManager manager=new onotogyManager();
+//   		OWLOntology ontology = manager.loadOntology();
+//   		OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
+//        OWLReasoner reasoner = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());
+   		
+   		OWLDataFactory dataFactory = manager1.getOWLDataFactory();
+//		ArrayList<OWLClass> e1cls=new ArrayList<OWLClass>();
+//		OWLClass e11 = dataFactory.getOWLClass(IRI.create("http://purl.obolibrary.org/obo/MFOEM_000001"));
+//		OWLClass e12 = dataFactory.getOWLClass(IRI.create("http://purl.obolibrary.org/obo/MFOEM_000202"));
+//		OWLClass e13=dataFactory.getOWLClass(IRI.create("http://www.semanticweb.org/aliaelbolock/ontologies/2019/9/cc#consumption_behavior"));
+//		OWLClass e14=dataFactory.getOWLClass(IRI.create("http://www.semanticweb.org/aliaelbolock/ontologies/2019/9/cc#entertainment_behavior"));
+//		OWLClass e15=dataFactory.getOWLClass(IRI.create("http://www.semanticweb.org/aliaelbolock/ontologies/2019/9/cc#sleep_behaviors"));
+	
+//		e1cls.add(e11);
+//		e1cls.add(e12);
+//		e1cls.add(e13);
+//		e1cls.add(e14);
+//		e1cls.add(e15);
+		ArrayList<sleepClass> queryRes=new ArrayList<sleepClass>();
+//		for(OWLClass cc:e1cls) {
+//		for(Node<OWLClass> e:reasoner.getSubClasses(cc, true)) {
+//			for(OWLClass e1:e.getEntities()) {
+		for(int i=0;behavior.size()>i;i++) {
+		        OWLClass e1=dataFactory.getOWLClass(IRI.create("http://www.semanticweb.org/aliaelbolock/ontologies/2019/9/cc#"+behavior.get(i)));
+				sleepClass sleepcls=new sleepClass();
+				String value="";
+				String value2="";
+				sleepcls.setClassName(e1.getIRI());
+				for (OWLSubClassOfAxiom ax : ontology.getSubClassAxiomsForSubClass(e1)) {
+					OWLClassExpression superCls = ax.getSuperClass();
+					if(superCls.isAnonymous()) {
+					        
+							for(OWLClassExpression nce:ax.getNestedClassExpressions()) {
+					            if(nce.getClassExpressionType()==ClassExpressionType.DATA_HAS_VALUE) {					                
+					                value = nce.toString().substring(nce.toString().indexOf("<")+1,nce.toString().indexOf(">"));
+					                IRI iri=IRI.create(value+"");
+					                value2 = nce.toString().substring(nce.toString().indexOf("\"")+1,nce.toString().indexOf("^")-1);
+                                    if(iri.getShortForm().toString().equals("sleepHygienePromotingScore")) {
+                                    	sleepcls.setSleepHygieneScore(Integer.parseInt(value2));
+                                    }
+                                    if(iri.getShortForm().toString().equals("sleepَQualityPromotingScore")) {
+                                    	sleepcls.setSleepQualityScore(Integer.parseInt(value2));
+                                    }
+					                
+				                    }
+					                
+					                
+					            }
+						     
+							}
+					
+				}
+                queryRes.add(sleepcls);
+	}
+		for(int i=0;emotions.size()>i;i++) {
+	        OWLClass e1=dataFactory.getOWLClass(IRI.create("http://purl.obolibrary.org/obo/"+emotions.get(i)));
+			sleepClass sleepcls=new sleepClass();
+			String value="";
+			String value2="";
+			sleepcls.setClassName(e1.getIRI());
+			for (OWLSubClassOfAxiom ax : ontology.getSubClassAxiomsForSubClass(e1)) {
+				OWLClassExpression superCls = ax.getSuperClass();
+				if(superCls.isAnonymous()) {
+				        
+						for(OWLClassExpression nce:ax.getNestedClassExpressions()) {
+				            if(nce.getClassExpressionType()==ClassExpressionType.DATA_HAS_VALUE) {					                
+				                value = nce.toString().substring(nce.toString().indexOf("<")+1,nce.toString().indexOf(">"));
+				                IRI iri=IRI.create(value+"");
+				                value2 = nce.toString().substring(nce.toString().indexOf("\"")+1,nce.toString().indexOf("^")-1);
+                                if(iri.getShortForm().toString().equals("sleepHygienePromotingScore")) {
+                                	sleepcls.setSleepHygieneScore(Integer.parseInt(value2));
+                                }
+                                if(iri.getShortForm().toString().equals("sleepَQualityPromotingScore")) {
+                                	sleepcls.setSleepQualityScore(Integer.parseInt(value2));
+                                }
+				                
+			                    }
+				                
+				                
+				            }
+					     
+						}
+				
+			}
+            queryRes.add(sleepcls);
+}
+//			}
+//		}
+//	}
+		
+//		System.out.println(queryRes);
+//        System.out.println(queryRes.size());
+
+
+		return queryRes;
+	}
+	
+	public  ArrayList<sleepClass> getActivityFoodNums(OWLOntology ontology,OWLReasoner reasoner,ArrayList<String> food,ArrayList<String> activity) throws OWLOntologyCreationException, URISyntaxException, ParseException{
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		onotogyManager man=new onotogyManager();
+//		OWLOntology ontology=man.loadOntology();
+//		OWLReasoner reasoner=useReasoner(ontology);
+//		OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
+//        OWLReasoner reasoner = reasonerFactory.createReasoner(ontology, new SimpleConfiguration()); 
+        engine = QueryEngine.create(manager, reasoner);
+        ArrayList<sleepClass> queryResult=new ArrayList<sleepClass>();
+        double val=0.0;
+        for(int i=0;food.size()>i;i++) {
+        	sleepClass clazz=new sleepClass();
+        	IRI iri=IRI.create("https://perkapp.fbk.eu/helis/ontology/core#"+food.get(i));
+        	clazz.setClassName(iri);
+        val=processQuery(
+				"PREFIX core: <https://perkapp.fbk.eu/helis/ontology/core#>\n" +
+				"PREFIX cc: <http://www.semanticweb.org/aliaelbolock/ontologies/2019/9/cc#>\n" +
+				"SELECT ?c WHERE {" +
+				    "PropertyValue(core:"+food.get(i)+", core:amountCalories, ?c) \n" +
+				   
+				    
+				"}");
+        clazz.setCalories(val);
+        queryResult.add(clazz);
+        }
+//        System.out.println(queryResult.size());
+//        ArrayList<sleepClass> queryResult2=new ArrayList<sleepClass>();
+        for(int i=0;activity.size()>i;i++) {
+        sleepClass clazz=new sleepClass();
+        IRI iri=IRI.create("https://perkapp.fbk.eu/helis/ontology/core#"+activity.get(i));
+        clazz.setClassName(iri);
+        val=processQuery(
+				"PREFIX core: <https://perkapp.fbk.eu/helis/ontology/core#>\n" +
+				"PREFIX cc: <http://www.semanticweb.org/aliaelbolock/ontologies/2019/9/cc#>\n" +
+				"SELECT ?b WHERE {" +
+				    "PropertyValue(core:"+activity.get(i)+", core:hasMETValue, ?b) \n" +
+				   
+				    
+				"}");
+        clazz.setMETValues(val);
+        queryResult.add(clazz);
+        }
+//        queryResult.addAll(queryResult2);
+//        System.out.println(queryResult2.size());
+
+        System.out.println(queryResult);
+		return queryResult;
+	}
+	public static double processQuery(String q) throws ParseException
+	{
+		
+		ArrayList<sleepClass> sleepResult=new ArrayList<sleepClass>();
+        double value=0.0;
+		try {
+			long startTime = System.currentTimeMillis();
+			
+			// Create a SPARQL-DL query
+			Query query = Query.create(q);
+			
+			System.out.println("Excecute query:");
+			System.out.println(q);
+			System.out.println("-------------------------------------------------");
+			
+			// Execute the query and generate the result set
+			QueryResult result = engine.execute(query);
+			if(query.isAsk()) {
+				System.out.print("Result: ");
+				if(result.ask()) {
+					System.out.println("yes");
+				}
+				else {
+					System.out.println("no");
+				}
+			}
+			else {
+				if(!result.ask()) {
+					System.out.println("Query has no solution.\n");
+				}
+				else {
+					
+					System.out.println("Results:");
+					System.out.print(result.toJSON());
+//					JSONObject employeeObject = (JSONObject) result.toJSON().get("");
+					JSONParser parser = new JSONParser();
+					JSONObject json = (JSONObject) parser.parse(result.toJSON());
+					JSONObject json02=(JSONObject) json.get("results");
+					JSONArray jsonArray=(JSONArray) json02.get("bindings");
+					for(int i=0;jsonArray.size()>i;i++) {
+						JSONObject obj=(JSONObject)jsonArray.get(i);
+						
+//						JSONObject obj02=(JSONObject)obj.get("a");
+//						IRI iri=IRI.create(obj02.get("value")+"");
+						sleepClass cls=new sleepClass();
+//						cls.setClassName(iri);
+						JSONObject obj02=(JSONObject)obj.get("b");
+						if(obj02!=null) {
+//						double MET=Double.parseDouble(obj02.get("value")+"");
+						value=Double.parseDouble(obj02.get("value")+"");
+//						cls.setMETValues(MET);
+						}
+						obj02=(JSONObject)obj.get("c");
+						if(obj02!=null) {
+						double hygieneVal=Double.parseDouble(obj02.get("value")+"");
+						cls.setCalories(hygieneVal);
+						value=Double.parseDouble(obj02.get("value")+"");
+						}
+//						System.out.println(cls.toString());
+//						sleepResult.add(cls);
+						
+						
+					}
+					System.out.println(jsonArray.toString());
+					
+					
+					System.out.println("-------------------------------------------------");
+					System.out.println("Size of result set: " + result.size());
+				}
+			}
+
+			System.out.println("-------------------------------------------------");
+			System.out.println("Finished in " + (System.currentTimeMillis() - startTime) / 1000.0 + "s\n");
+		  
+		}
+        catch(QueryParserException e) {
+        	System.out.println("Query parser error: " + e);
+        }
+        catch(QueryEngineException e) {
+        	System.out.println("Query engine error: " + e);
+        }
+//		return sleepResult;
+		return value;
+	}
+
+	
+		
 public  ArrayList<ontologyClass> getVegetables(OWLOntology ontology,OWLReasoner reasoner) throws OWLOntologyCreationException{
 //		FreshVegetables
 
@@ -1088,15 +1410,20 @@ public  ArrayList<ontologyClass> getInstances(OWLReasoner reasoner,IRI owlIRI,OW
     return classIndividuals;
 }
 
-public OWLOntology loadOntology() throws OWLOntologyCreationException {
-	String x = "C:\\Users\\user\\Desktop\\Ontologies\\V11RulesforFacets.owl";
+public OWLOntology loadOntology() throws OWLOntologyCreationException, URISyntaxException {
+//	String x = ".\\V11RulesforFacets.owl";
+//	File file = new File("resources/V11RulesforFacets.owl");
+//	String absolutePath = file.getAbsolutePath();
+	URL res = getClass().getClassLoader().getResource("V11RulesforFacets.owl");
+	File file = Paths.get(res.toURI()).toFile();
+	String absolutePath = file.getAbsolutePath();
 //	https://perkapp.fbk.eu/helis/ontology/core#CoffeeAndSubstitutes
 //	 IRI iri = IRI.create(x);
 	
 	 OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-	 IRI pizzaontology = IRI.create("https://raw.githubusercontent.com/nadaelarabyy/Character/master/V11RulesforFacets.owl");
-		OWLOntology ontology=manager.loadOntology(pizzaontology);
-//	 OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new File(x));
+//	 IRI pizzaontology = IRI.create("https://raw.githubusercontent.com/nadaelarabyy/Character/master/V11RulesforFacets.owl");
+//		OWLOntology ontology=manager.loadOntology(pizzaontology);
+	 OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new File(absolutePath));
 	 System.out.println("Loaded: " + ontology.getOntologyID());
 	 return ontology;
 }

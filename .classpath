@@ -6,6 +6,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0">
 		<attributes>
@@ -18,13 +19,11 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/user/Desktop/owlapi-osgidistribution-4.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Desktop/sparqldl-api1.0.0/sparqldl-api.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Desktop/sparqldl-api1.0.0/sparqldl-api-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Desktop/sparqldl-api1.0.0/sparqldl-api-src.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Desktop/sparqldl-api1.0.0/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Desktop/sparqldl-api1.0.0/lib/jpaul-2.5.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Desktop/sparqldl-api1.0.0/lib/junit-4.8.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/user/Desktop/sparqldl-api1.0.0/lib/owlapiv3/owlapi-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
