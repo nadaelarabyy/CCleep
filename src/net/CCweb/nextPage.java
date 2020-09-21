@@ -51,12 +51,6 @@ public class nextPage extends HttpServlet {
 	 */
     static String[] characterArray= {"we could not define your personality based on your input"};
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
-//		PrintWriter pw=response.getWriter();
-//		pw.print(request.getSession().getAttribute("character"));
-//	    getMethod(request);
-
 
 		request.getRequestDispatcher("nextPage.jsp").forward(request, response);
 		 

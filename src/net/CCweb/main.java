@@ -72,6 +72,7 @@ public class main extends HttpServlet {
 		String[] behavior=request.getParameterValues("behavior");
 		String[]sleepDisorder=request.getParameterValues("sleepDisorder");
 		String[] opinion=request.getParameterValues("opinion");
+		String consent=request.getParameter("vehicle1");
 		String suggestion=request.getParameter("suggestion");
 		boolean submitButtonPressed = request.getParameter("submit") != null;
 		if(submitButtonPressed) {
@@ -216,7 +217,7 @@ public class main extends HttpServlet {
 				    if(suggestion!=null)
 				        person.put("suggestion",suggestion);
 
-				   
+				person.put("consent",consent); 
 			    person.put("personalityRating","");
 			    person.put("characterInference","");
 			    person.put("personalityOfChoice","");
@@ -237,23 +238,7 @@ public class main extends HttpServlet {
 			System.out.println("id----------: "+id.toString());
 			request.getSession().setAttribute("_id", id);
 			request.getSession().setAttribute("Expression", expression);
-//			------------------------------------------------------------------------------
-//		 OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
-//	        OWLReasoner reasoner02 = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());  
-//	       ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-//	       DLQueryPrinter dlQueryPrinter=new DLQueryPrinter(
-//                  new DLQueryEngine(reasoner02, shortFormProvider),
-//                  shortFormProvider); 
-//	      ArrayList<ontologyClass> finalResult=new ArrayList<ontologyClass>();
-//         try {
-//			ArrayList<ontologyClass> value=dlQueryPrinter.askQuery(expression);
-//			request.getSession().setAttribute("Result", value);
-//		} catch (URISyntaxException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-         
-//			------------------------------------------------------------------------------
+
 			
 				response.sendRedirect(request.getContextPath() + "/nextPage");
 

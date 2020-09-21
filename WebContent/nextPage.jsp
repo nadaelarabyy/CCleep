@@ -279,7 +279,7 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
         } 
 
 </style>
-<title>Insert title here</title>
+<title>CCleep</title>
 </head>
 <body>
 
@@ -290,7 +290,7 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
     <div class="col-md-12">
      
      
-     
+             
      
      <form  method="post">
         <legend><span class="number">3</span></legend>
@@ -301,244 +301,238 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
           <ul style="list-style-position: inside; list-style-type: circle;" >
           <div>
           
-          
-          
-          
-          
-          
-          
-          
           <br>
-          <%
-String lang=(String)request.getSession().getAttribute("lang");
-          ArrayList<ontologyClass>personalityList=(ArrayList<ontologyClass>) request.getSession().getAttribute("persoanlityList");
 
-%>
 
+  <%
+             String lang=(String)request.getSession().getAttribute("lang");
+            //  String lang="ar"; 
+           %>
 <h2><%=lang.equals("en")?"In case you do not agree with the personality traits shown based on your pre-sleep routine or nothing shows up, please refer to your personality using the following tags :)":"في حالة لا تتفق مع الصفات المعروضة او في حالة عدم ظهور شيئ ,يمكنك اختيار الصفات التي تناسب شخصيتك" %></h2>
-
 
 
 <div class="container">
     <ul class="ks-cboxtags">
-    <h3>You describe yourself as reserved</h3>
+    <h3>You describe yourself as reserved<br>تصف نفسك كشخص متحفظ </h3>
     <li>
     <input type="checkbox" name="Q1" id="Q101" value="1">
-      <label for="Q101" >Strongly disagree</label>
+      <label for="Q101" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q1" id="Q102" value="2">
-      <label for="Q102" >Disagree alittle</label> 
+      <label for="Q102" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q1" id="Q103" value="3">
-      <label for="Q103" >Neither agree nor disagree</label> 
+      <label for="Q103" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q1" id="Q104" value="4">
-      <label for="Q104" >Agree alittle</label> 
+      <label for="Q104" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q1" id="Q105" value="5">
-      <label for="Q105" >Strongly agree</label> 
+      <label for="Q105" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-          <h3>You are generally trusting</h3>
+          <h3>You are generally trusting<br>أنت تثق بشكل عام</h3>
     <li>
     <input type="checkbox" name="Q2" id="Q201" value="1">
-      <label for="Q201" >Strongly disagree</label>
+      <label for="Q201" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q2" id="Q202" value="2">
-      <label for="Q202" >Disagree alittle</label> 
+      <label for="Q202" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q2" id="Q203" value="3">
-      <label for="Q203" >Neither agree nor disagree</label> 
+      <label for="Q203" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q2" id="Q204" value="4">
-      <label for="Q204" >Agree alittle</label> 
+      <label for="Q204" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q2" id="Q205" value="5">
-      <label for="Q205" >Strongly agree</label> 
+      <label for="Q205" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-        <h3>You tend to be lazy</h3>
+        <h3>You tend to be lazy<br>تميل إلى أن تكون كسولًا</h3>
     <li>
     <input type="checkbox" name="Q3" id="Q301" value="1">
-      <label for="Q301" >Strongly disagree</label>
+      <label for="Q301" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q3" id="Q302" value="2">
-      <label for="Q302" >Disagree alittle</label> 
+      <label for="Q302" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q3" id="Q303" value="3">
-      <label for="Q303" >Neither agree nor disagree</label> 
+      <label for="Q303" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q3" id="Q304" value="4">
-      <label for="Q304" >Agree alittle</label> 
+      <label for="Q304" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q3" id="Q305" value="5">
-      <label for="Q305" >Strongly agree</label> 
+      <label for="Q305" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-        <h3>You are relaxed, handle stress well</h3>
+        <h3>You are relaxed, handle stress well<br>أنت مرتاح ، تعامل مع الإجهاد جيدًا</h3>
     <li>
     <input type="checkbox" name="Q4" id="Q401" value="1">
-      <label for="Q401" >Strongly disagree</label>
+      <label for="Q401" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q4" id="Q402" value="2">
-      <label for="Q402" >Disagree alittle</label> 
+      <label for="Q402" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q4" id="Q403" value="3">
-      <label for="Q403" >Neither agree nor disagree</label> 
+      <label for="Q403" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q4" id="Q404" value="4">
-      <label for="Q404" >Agree alittle</label> 
+      <label for="Q404" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q4" id="Q405" value="5">
-      <label for="Q405" >Strongly agree</label> 
+      <label for="Q405" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-      <h3>You have few artistic interests</h3>
+      <h3>You have few artistic interests<br>لديك اهتمامات فنية قليلة</h3>
     <li>
     <input type="checkbox" name="Q5" id="Q501" value="1">
-      <label for="Q501" >Strongly disagree</label>
+      <label for="Q501" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q5" id="Q502" value="2">
-      <label for="Q502" >Disagree alittle</label> 
+      <label for="Q502" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q5" id="Q503" value="3">
-      <label for="Q503" >Neither agree nor disagree</label> 
+      <label for="Q503" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q5" id="Q504" value="4">
-      <label for="Q504" >Agree alittle</label> 
+      <label for="Q504" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q5" id="Q505" value="5">
-      <label for="Q505" >Strongly agree</label> 
+      <label for="Q505" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-        <h3>You are outgoing, sociable</h3>
+        <h3>You are outgoing, sociable<br>أنت منفتح , اجتماعي</h3>
     <li>
     <input type="checkbox" name="Q6" id="Q601" value="1">
-      <label for="Q601" >Strongly disagree</label>
+      <label for="Q601" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q6" id="Q602" value="2">
-      <label for="Q602" >Disagree alittle</label> 
+      <label for="Q602" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q6" id="Q603" value="3">
-      <label for="Q603" >Neither agree nor disagree</label> 
+      <label for="Q603" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q6" id="Q604" value="4">
-      <label for="Q604" >Agree alittle</label> 
+      <label for="Q604" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q6" id="Q605" value="5">
-      <label for="Q605" >Strongly agree</label> 
+      <label for="Q605" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-        <h3>You tend to find fault with others</h3>
+        <h3>You tend to find fault with others<br>تميل إلى إيجاد خطأ مع الآخرين</h3>
     <li>
     <input type="checkbox" name="Q7" id="Q701" value="1">
-      <label for="Q701" >Strongly disagree</label>
+      <label for="Q701" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q7" id="Q702" value="2">
-      <label for="Q702" >Disagree alittle</label> 
+      <label for="Q702" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q7" id="Q703" value="3">
-      <label for="Q703" >Neither agree nor disagree</label> 
+      <label for="Q703" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q7" id="Q704" value="4">
-      <label for="Q704" >Agree alittle</label> 
+      <label for="Q704" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q7" id="Q705" value="5">
-      <label for="Q705" >Strongly agree</label> 
+      <label for="Q705" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-        <h3>You do a thorough job</h3>
+        <h3>You do a thorough job<br>أنت تقوم بعمل شامل</h3>
     <li>
     <input type="checkbox" name="Q8" id="Q801" value="1">
-      <label for="Q801" >Strongly disagree</label>
+      <label for="Q801" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q8" id="Q802" value="2">
-      <label for="Q802" >Disagree alittle</label> 
+      <label for="Q802" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q8" id="Q803" value="3">
-      <label for="Q803" >Neither agree nor disagree</label> 
+      <label for="Q803" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q8" id="Q804" value="4">
-      <label for="Q804" >Agree alittle</label> 
+      <label for="Q804" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q8" id="Q805" value="5">
-      <label for="Q805" >Strongly agree</label> 
+      <label for="Q805" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-        <h3>You get nervous easily</h3>
+        <h3>You get nervous easily <br>تشعر بالتوتر بسهولة</h3>
     <li>
     <input type="checkbox" name="Q9" id="Q901" value="1">
-      <label for="Q901" >Strongly disagree</label>
+      <label for="Q901" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q9" id="Q902" value="2">
-      <label for="Q902" >Disagree alittle</label> 
+      <label for="Q902" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q9" id="Q903" value="3">
-      <label for="Q903" >Neither agree nor disagree</label> 
+      <label for="Q903" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q9" id="Q904" value="4">
-      <label for="Q904" >Agree alittle</label> 
+      <label for="Q904" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q9" id="Q905" value="5">
-      <label for="Q905" >Strongly agree</label> 
+      <label for="Q905" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
-        <h3>You have an active imagination</h3>
+        <h3>You have an active imagination
+        <br>
+لديك خيال نشط</h3>
     <li>
     <input type="checkbox" name="Q10" id="Q1001" value="1">
-      <label for="Q1001" >Strongly disagree</label>
+      <label for="Q1001" >Strongly disagree<br>لا أوافق بشدة</label>
       </li>
       <li>
     <input type="checkbox" name="Q10" id="Q1002" value="2">
-      <label for="Q1002" >Disagree alittle</label> 
+      <label for="Q1002" >Disagree alittle<br>أختلف قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q10" id="Q1003" value="3">
-      <label for="Q1003" >Neither agree nor disagree</label> 
+      <label for="Q1003" >Neither agree nor disagree<br>لا أوافق ولا أرفض</label> 
       </li>
       <li>
     <input type="checkbox" name="Q10" id="Q1004" value="4">
-      <label for="Q1004" >Agree alittle</label> 
+      <label for="Q1004" >Agree alittle<br>توافق قليلا</label> 
       </li>
       <li>
     <input type="checkbox" name="Q10" id="Q1005" value="5">
-      <label for="Q1005" >Strongly agree</label> 
+      <label for="Q1005" >Strongly agree<br>موافق بشدة</label> 
       </li>
       <!--  ------------------------------------------------------------------------------------------------- -->
     </ul>
@@ -554,14 +548,14 @@ String lang=(String)request.getSession().getAttribute("lang");
           onotogyManager manager=new onotogyManager();
           OWLOntology ontology = manager.loadOntology();
           OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
-	        OWLReasoner reasoner02 = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());  
-	       ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-	       DLQueryPrinter dlQueryPrinter=new DLQueryPrinter(
+            OWLReasoner reasoner02 = reasonerFactory.createReasoner(ontology, new SimpleConfiguration());  
+           ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+           DLQueryPrinter dlQueryPrinter=new DLQueryPrinter(
                 new DLQueryEngine(reasoner02, shortFormProvider),shortFormProvider); 
-	      //ArrayList<ontologyClass> finalResult=new ArrayList<ontologyClass>();
-	      String expression=(String)request.getSession().getAttribute("Expression");
-	      ArrayList<ontologyClass> value=dlQueryPrinter.askQuery(expression);
-	      request.getSession().setAttribute("Result", value);
+          //ArrayList<ontologyClass> finalResult=new ArrayList<ontologyClass>();
+          String expression=(String)request.getSession().getAttribute("Expression");
+          ArrayList<ontologyClass> value=dlQueryPrinter.askQuery(expression);
+          request.getSession().setAttribute("Result", value);
                 //  ArrayList<ontologyClass> finalResult=(ArrayList<ontologyClass>) request.getSession().getAttribute("Result");
 for(int i=0;value.size()>i;i++){
 %>
@@ -680,7 +674,6 @@ for(int i=0;value.size()>i;i++){
         </div>
       </div>
 
-<br>
       <button value="Submit" name="submit" onclick="show()">Done</button>
       </form>
 

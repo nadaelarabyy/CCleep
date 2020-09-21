@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8" >
-<title>Insert title here</title>
+<title>CCleep</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -336,14 +336,15 @@ li:hover .tooltiptext {
    <legend><span class="number">2</span></legend>
    
    <div style="text-align: center">
-             <img src="https://raw.githubusercontent.com/nadaelarabyy/Character/master/CBSTriad.PNG" alt="" width="300" height="300" style="border: solid white 2px;"/>
+     <img src="https://raw.githubusercontent.com/nadaelarabyy/Character/master/cc-logo.PNG" alt="" width="400" height="300" style="border: solid white 2px;"/>
              
    </div>
   <h1 style="font-family: monospace;"></h1>
+  
   <%String lang=(String)request.getSession().getAttribute("lang"); %>
      <div style="border: solid white 2px; font-family: monospace;">
        <h3>
-                <%=lang.equals("en")?"In C-B-S triad we are mapping character, behavior and situation and by knowing two parts of the triad we can infer the third one so imagine having a certain behavior in specific situation then we can infer character <br> Behavior: performing certain activity, food consumption, emotions <br> Situation: couple of hours before going to bed <br> Character: personality traits based on the big five model":"التصرفات: النشاطات التي تقوم بها <br> الموقف: الساعات الاخيرة قبل الذهاب للنوم <br> الشخصية: صفات الانسان "%>
+                <%=lang.equals("en")?"Our behavior can say a lot about our personality, especially in times of crisis. We investigate the effect of the behavior in the two hours prior to sleep":"تصرفاتنا يمكن ان تتنبأ بشخصيتنا و بخاصة في وقت الازمات , نبحث عن تأثير التصرفات في الساعاتين قبل الذهاب للنوم"%>
        
        </h3>
      </div>
@@ -365,7 +366,7 @@ li:hover .tooltiptext {
     
     
     <button type="button" class="collapsible">
-    <%=lang.equals("en")?"Which of these food products do you consume within the couples of hours before going to bed?":"أي من هذه الاطعمة تتناولها في الساعات الاخيرة من اللليل قبل الذهاب للنوم؟"%>
+    <%=lang.equals("en")?"Which of these foods do you consume within two hours prior to going to bed?":"أي من هذه الاطعمة تتناولها في الساعات الاخيرة من اللليل قبل الذهاب للنوم؟"%>
     
     
     </button>
@@ -864,7 +865,7 @@ ArrayList<ontologyClass> alcoholicArray=manager.getAlcoholicBeverages(ontology,r
 
 </div>
 <button  type="button" class="collapsible">
-<%=lang.equals("en")?"Which of these activities do you exert within the couples of hours before going to bed?":"أي من هذة الانشطة تقوم بها في الساعات الاخيرة قبل الذهاب الي النوم؟" %>
+<%=lang.equals("en")?"Which of these physical activities do you perform within two hours prior to going to bed?":"أي من هذة الانشطة تقوم بها في الساعات الاخيرة قبل الذهاب الي النوم؟" %>
 
 </button>
 
@@ -904,7 +905,7 @@ ArrayList<ontologyClass> activitiesArray=manager.getActivity(ontology,reasoner);
 
 
 <button type="button" class="collapsible">
-<%=lang.equals("en")?"How do you feel within the couple of hours before going to bed?":"كيف تشعر في الساعات الاخيرة قبل الذهاب من النوم؟" %>
+<%=lang.equals("en")?"How do you feel within two hours prior to going to bed?":"كيف تشعر في الساعات الاخيرة قبل الذهاب من النوم؟" %>
 
 </button>
 
@@ -963,7 +964,7 @@ ArrayList<ontologyClass> activitiesArray=manager.getActivity(ontology,reasoner);
 
 <!-- ---------------------------------------------------------------------------------------------------------- -->
 <button type="button" class="collapsible">
-<%=lang.equals("en")?"Which of these behaviors do you do within the couple of hours before going to bed?":"اي من هذة التصرفات تقوم بها في الساعات الاخيرة قبل الذهاب الي النوم؟" %>
+<%=lang.equals("en")?"Which of these do you do  within two hours prior to going to bed? ":"اي من هذة التصرفات تقوم بها في الساعات الاخيرة قبل الذهاب الي النوم؟" %>
 </button>
 
 <div class="content">
@@ -1051,7 +1052,7 @@ ArrayList<ontologyClass> activitiesArray=manager.getActivity(ontology,reasoner);
 
 
 <button type="button" class="collapsible">
-<%=lang.equals("en")?"Do you suffer from any of these issues?":"هل تعاني من احدي هذه المشكلات؟" %>
+<%=lang.equals("en")?"Do you suffer from any of the following sleep disorders?":"هل تعاني من احدي هذه المشكلات؟" %>
 
 </button>
 
@@ -1115,12 +1116,12 @@ ArrayList<ontologyClass> activitiesArray=manager.getActivity(ontology,reasoner);
  <h1 style="font-family: monospace;"><%=lang.equals("en")?"Feedback":"رأيك" %> </h1>
   
   <div class="container" >
-  <h2 style="font-family: monospace;"><%=lang.equals("en")?"how do you feel about the choices":"كيف تشعر تجاه هذه الاختيارات؟" %></h2>
+  <h2 style="font-family: monospace;"><%=lang.equals("en")?"For you, the presented choices are...":"كيف تشعر تجاه هذه الاختيارات؟" %></h2>
     <ul class="ks-cboxtags">
-      <li><input name="opinion" type="checkbox" id="checkboxOne" value="it was expressive and good"><label for="checkboxOne"><%=lang.equals("en")?"it was expressive and good":"لقد كانت الاختيارات معبرة وجيدة" %></label></li>
-      <li><input name="opinion" type="checkbox" id="checkboxTwo" value="i didnot understand alot of stuff" ><label for="checkboxTwo"><%=lang.equals("en")?"i didnot understand alot of stuff":"لم استطع علي استيعاب اختيارات عديدة" %></label></li>
-      <li><input name="opinion" type="checkbox" id="checkboxThree" value="it was long and horrible" ><label for="checkboxThree"><%=lang.equals("en")?"it was long and horrible":"لقد كان طويل و متعب" %></label></li>
-      <li><input name="opinion" type="checkbox" id="checkboxFour" value="it was long but i managed to express using these tags" ><label for="checkboxFour"><%=lang.equals("en")?"it was long but i managed to express using these tags":"لقد كان طويل و لكن تمكنت من التعبير باستخدام هذه الاختيارات" %></label></li>
+      <li><input name="opinion" type="checkbox" id="checkboxOne" value="expressive and good"><label for="checkboxOne"><%=lang.equals("en")?"expressive and good":"لقد كانت الاختيارات معبرة وجيدة" %></label></li>
+      <li><input name="opinion" type="checkbox" id="checkboxTwo" value="long and horrible" ><label for="checkboxTwo"><%=lang.equals("en")?"long and horrible":"لم استطع علي استيعاب اختيارات عديدة" %></label></li>
+      <li><input name="opinion" type="checkbox" id="checkboxThree" value="long but I managed to express what I needed" ><label for="checkboxThree"><%=lang.equals("en")?"long but I managed to express what I needed":"لقد كان طويل و متعب" %></label></li>
+      <li><input name="opinion" type="checkbox" id="checkboxFour" value="I did not understand a lot of the choices" ><label for="checkboxFour"><%=lang.equals("en")?"I did not understand a lot of the choices":"لقد كان طويل و لكن تمكنت من التعبير باستخدام هذه الاختيارات" %></label></li>
     
     </ul>
   
@@ -1129,7 +1130,10 @@ ArrayList<ontologyClass> activitiesArray=manager.getActivity(ontology,reasoner);
    
     <textarea name="suggestion" id="message" cols="30" rows="10" placeholder="Message"></textarea>
  
+<input type="checkbox" id="vehicle1" name="vehicle1" value="yes">
+  <label for="vehicle1"> I agree that my inputs will be used for research study</label>
 
+<br>
 </div>    
    
     <input name="submit" type="submit" value="Submit">

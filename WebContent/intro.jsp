@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>CCleep</title>
 <style type="text/css">
 *, *:before, *:after {
   -moz-box-sizing: border-box;
@@ -138,9 +138,7 @@ label.light {
           <div style="border: solid white 1px;">
           <h1 style="font-family: monospace;">Character Computing</h1>
           <div style="border: solid white 5px; padding: 10px;">
-          <h3 >A lot of our behaviors can detect our personality , so in this feedback we believe that behaviors that the human perform in the 
-            couple of hours before going to sleep can tell a little bit about the person traits so by doing this feedback application we want to
-          review this fact   </h3>
+          <h3 >CCleep: Interaction of Character, Corona and Sleep</h3>
         </div>
       </div>
        <br>
